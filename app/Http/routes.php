@@ -14,12 +14,12 @@
 Route::get('/', function () {
     return view('app');
 });
-
+Route::get('/users/freg', 'UserController@registerWithFb');
 // Test routes
 Route::get('/test', ['as'=> 'PostController@index']);
 Route::get('about', 'PageController@about');
 Route::get('contact', 'PageController@contact');
-
+Route::get('dispatch', 'UserController@testDispatch');
 // Routes for posts
 Route::get('index', 'PostController@index');
 Route::get('posts/create', 'PostController@create');

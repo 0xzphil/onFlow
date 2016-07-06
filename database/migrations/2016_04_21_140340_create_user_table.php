@@ -18,9 +18,9 @@ class CreateUserTable extends Migration
             $table->string('username')->unique();
             $table->string('password', 60);
             $table->string('email')->unique();
+            $table->string('facebookId')->default('');
             $table->enum('role', ['member', 'admin', 'moder'])->default('member');
             $table->timestamp('created_at');
-            //$table->
             $table->timestamp('updated_at');
             $table->rememberToken();
         });
