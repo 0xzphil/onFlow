@@ -21,12 +21,12 @@
 			</p>
 
 			<!-- Email form -->
-			<!--
+			
 			<p>
 			{{ Form:: label('Email')}}
 			{{ Form:: text('email', null,  ['class'=> 'form-control', 'foo'=> 'bar'])}}
 			</p>
-			-->
+			
 			<!-- Submit -->
 			{{ Form:: submit('submit', ['class'=> 'form-control'])}}
 

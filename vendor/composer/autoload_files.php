@@ -16,5 +16,4 @@ return array(
     'f0906e6318348a765ffb6eb24e0d0938' => $vendorDir . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
     '58571171fd5812e6e447dce228f52f4d' => $vendorDir . '/laravel/framework/src/Illuminate/Support/helpers.php',
     'f18cc91337d49233e5754e93f3ed9ec3' => $vendorDir . '/laravelcollective/html/src/helpers.php',
-    '7e702cccdb9dd904f2ccf22e5f37abae' => $vendorDir . '/facebook/php-sdk-v4/src/Facebook/polyfills.php',
 );
