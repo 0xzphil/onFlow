@@ -7,6 +7,9 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Facebook;
+use FacebookRedirectLoginHelper;
+use FacebookSDKException;
 
 class UserController extends Controller
 {
@@ -16,8 +19,8 @@ class UserController extends Controller
      */
     public function show(){
         
-    	$users = User::all();
-    	return view('user.list', compact('users'));
+        $users = User::all();
+        return view('user.list', compact('users'));
     }
 
     
@@ -26,7 +29,7 @@ class UserController extends Controller
      * @return [view] [create]
      */
     public function create(){
-    	return view('user.create');
+        return view('user.create');
     }
 
     /**
@@ -39,15 +42,16 @@ class UserController extends Controller
         if( $request->get('password') != $request->get('rpassword')){
             return redirect('users/create');
         }
-    	//validation and create
-    	User::create([
-    		'username'   => $request->get('username'),
-    		'password'   => Hash::make($request->get('password')),
-    		'email'      => $request->get('email'), 
-    		'created_at' => Carbon::now(),
-    		'updated_at' => Carbon::now()
-    	]);
-    	return redirect('users/show');
+        //validation and create
+        User::create([
+            'username'   => $request->get('username'),
+            'password'   => Hash::make($request->get('password')),
+            'email'      => $request->get('email'), 
+            'facebookId' => $request->get('facebookId'),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+        return redirect('users/show');
     }
 
     /**
@@ -56,8 +60,8 @@ class UserController extends Controller
      * @return [view]     [edit]
      */
     public function edit($id){
-    	$user = User::where('user_id', $id)->firstOrFail();
-    	return view('user.edit', compact('user'));
+        $user = User::where('user_id', $id)->firstOrFail();
+        return view('user.edit', compact('user'));
     }
 
     /**
@@ -67,12 +71,116 @@ class UserController extends Controller
      * @return [redirect]               [users/show]
      */
     public function update(UserRequest $request, $id){
-    	$user = User::where('user_id', $id)->firstOrFail();
-    	$user->username = $request->get('username');
-    	$user->password = Hash::make($request->get('password'));
-    	$user->email = $request->get('email');
-    	$user->save();
-    	return redirect('users/show');
+        $user = User::where('user_id', $id)->firstOrFail();
+        $user->username = $request->get('username');
+        $user->password = Hash::make($request->get('password'));
+        $user->email = $request->get('email');
+        $user->save();
+        return redirect('users/show');
+    }
+
+    public function registerWithFb(){
+        session_start();
+        // init app with app id and secret
+        $fb = new Facebook\Facebook([
+            'app_id' => '1150786978348749', 
+            'app_secret' => '20f037495a075998faf48494dedc37ae',
+            'default_graph_version' => 'v2.2',
+        ]);
+
+        // login helper with redirect_uri
+        $helper = $fb->getRedirectLoginHelper('http://onflow.hvnc.us/public/users/freg');
+        $permissions = ['email', 'user_likes']; // optional
+        
+        try {
+            $accessToken = $helper->getAccessToken();
+        } catch(Facebook\Exceptions\FacebookResponseException $e) {
+            // When Graph returns an error
+            echo 'Graph returned an error: ' . $e->getMessage();
+            exit;
+        } catch(Facebook\Exceptions\FacebookSDKException $e) {
+            // When validation fails or other local issues
+            echo 'Facebook SDK returned an error: ' . $e->getMessage();
+            exit;
+        }
+
+        if (! isset($accessToken)) {
+            if ($helper->getError()) {
+                header('HTTP/1.0 401 Unauthorized');
+                echo "Error: " . $helper->getError() . "\n";
+                echo "Error Code: " . $helper->getErrorCode() . "\n";
+                echo "Error Reason: " . $helper->getErrorReason() . "\n";
+                echo "Error Description: " . $helper->getErrorDescription() . "\n";
+            } else {
+                header('HTTP/1.0 400 Bad Request');
+                //echo 'Bad request no connection';
+                $loginUrl = $helper->getLoginUrl('http://onflow.hvnc.us/public/users/freg', $permissions);
+                header('Location: '.$loginUrl);
+            }
+            exit;
+        }
+
+        // Logged in
+        echo '<h3>Access Token</h3>';
+        var_dump($accessToken->getValue());
+
+        // The OAuth 2.0 client handler helps us manage access tokens
+        $oAuth2Client = $fb->getOAuth2Client();
+
+        // Get the access token metadata from /debug_token
+        $tokenMetadata = $oAuth2Client->debugToken($accessToken);
+        echo '<h3>Metadata</h3>';
+        var_dump($tokenMetadata);
+
+        // Get user information
+        try{    
+            $response = $fb->get('/me', $accessToken);
+        } catch(Facebook\Exceptions\FacebookResponseException $e){
+            echo 'Graph returned an error: ' . $e->getMessage();
+            exit;
+        } catch(Facebook\Exceptions\FacebookSDKException $e){
+            echo 'Facebook SDK returned an error: ' . $e->getMessage();
+            exit;
+        }
+
+        $userGraph = $response->getGraphUser();
+
+        echo '</br>Name: ' . $userGraph->getName();
+        echo '</br>Id: ' . $userGraph->getId();
+        echo '</br>Email: ' . $userGraph->getEmail();
+
+        // Create new user model
+        $user             = new User();
+        $user->username   = $userGraph->getName();
+        $user->email      = $userGraph->getEmail();
+        $user->facebookId = $userGraph->getId();
+        return view('user.create', compact('user'));
+
+/*        // Validation (these will throw FacebookSDKException's when they fail)
+        $tokenMetadata->validateAppId('1150786978348749'); // Replace {app-id} with your app id
+        // If you know the user ID this access token belongs to, you can validate it here
+        //$tokenMetadata->validateUserId('123');
+        $tokenMetadata->validateExpiration();
+
+        if (! $accessToken->isLongLived()) {
+          // Exchanges a short-lived access token for a long-lived one
+          try {
+            $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
+          } catch (Facebook\Exceptions\FacebookSDKException $e) {
+            echo "<p>Error getting long-lived access token: " . $helper->getMessage() . "</p>\n\n";
+            exit;
+          }
+
+          echo '<h3>Long-lived</h3>';
+          var_dump($accessToken->getValue());
+        }
+
+        $_SESSION['fb_access_token'] = (string) $accessToken;
+
+        // User is logged in with a long-lived access token.
+        // You can redirect them to a members-only page.
+        //header('Location: https://example.com/members.php');
+*/
     }
 
     

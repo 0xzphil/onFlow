@@ -14,7 +14,7 @@
 Route::get('/', function () {
     return view('app');
 });
-
+Route::get('/users/freg', 'UserController@registerWithFb');
 // Test routes
 Route::get('/test', ['as'=> 'PostController@index']);
 Route::get('about', 'PageController@about');
