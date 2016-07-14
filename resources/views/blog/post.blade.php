@@ -27,20 +27,12 @@
                     <div class="clear"></div>
                 </div>
                 
-           <div class="featured-image">
-                    <img src="img/Port_Harbor1-610x350.jpg" class="attachment-post-standard "  />                    
-                    <div class="post-icon">
-                    <span class="fa-stack fa-lg">
-                      <i class="fa fa-circle fa-stack-2x"></i>
-                      <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                    </span>
-                    </div>
-                    </div>
-            
+           
+            {!!Regex::frameYoutube($post->content)!!}
             <div class="post-margin">
             <p>
             <!-- Content of a blog post -->
-            {{ $post-> content}}
+            {!! $post-> content!!}
 
             </p>
 
@@ -50,7 +42,15 @@
             <span class="fa-stack fa-lg">
                <i class="fa fa-circle fa-stack-2x"></i>
                <i class="fa fa-tags fa-stack-1x fa-inverse"></i>
-            </span><a href="#" rel="tag">Color Schemes</a>, <a href="#" rel="tag">Gallery</a>, <a href="#" rel="tag">Images</a>, <a href="#" rel="tag">Light</a>, <a href="#" rel="tag">Post</a>, <a href="#" rel="tag">Slider</a>, <a href="#" rel="tag">Standard</a></div>
+            </span>
+            <a href="#" rel="tag">Color Schemes</a>, 
+            <a href="#" rel="tag">Gallery</a>, 
+            <a href="#" rel="tag">Images</a>, 
+            <a href="#" rel="tag">Light</a>, 
+            <a href="#" rel="tag">Post</a>, 
+            <a href="#" rel="tag">Slider</a>, 
+            <a href="#" rel="tag">Standard</a>
+            </div>
             <div class="clear"></div>            <!-- End Post Tags -->
             
             </div>
@@ -73,11 +73,12 @@
             
             
                         
-            
+<!--           
 <div class="post">
     <div class="post-margin">
         
     <!-- Start Related Item -->
+    <!--
     <div class="related-posts">
     
     <div class="post-avatar">
@@ -96,6 +97,7 @@
     
         
     <!-- Start Related Item -->
+    <!--
     <div class="related-posts">
     
     <div class="post-avatar">
@@ -114,6 +116,7 @@
     
         
     <!-- Start Related Item -->
+    <!--
     <div class="related-posts">
     
     <div class="post-avatar">
@@ -130,11 +133,12 @@
     </div>
     <!-- End Related Item -->
     
-        <div class="clear"></div>
-    </div>
-</div>            
+        <!--<div class="clear"></div> -->
+    <!--</div>
+</div>      -->      
             
 			<!-- Comments -->
+            <!--
             <div class="comment-container">
             
             <h6 id="comment-header">No Comments, Be The First!</h6>
@@ -144,6 +148,7 @@
             
             
             <!-- Comment Form -->
+            <!--
             <div class="commen-form">
             								<div id="respond" class="comment-respond">
 				<h3 id="reply-title" class="comment-reply-title"> <small><a rel="nofollow" id="cancel-comment-reply-link" href="#" style="display:none;">Cancel Reply</a></small></h3>
@@ -158,11 +163,12 @@
 						</p>
 											</form>
 							</div><!-- #respond -->
+                            <!--
 			            <div class="clear"></div>
             </form>
             </div>
             <!-- End Comment Form -->
-            
+            <!--
             </div>
             <!-- End Comments -->            
             

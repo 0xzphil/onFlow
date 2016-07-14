@@ -19,9 +19,9 @@ Route::get('/users/freg', 'UserController@registerWithFb');
 Route::get('/test', ['as'=> 'PostController@index']);
 Route::get('about', 'PageController@about');
 Route::get('contact', 'PageController@contact');
-
+Route::get('dispatch', 'UserController@testDispatch');
 // Routes for posts
-Route::get('index', 'PostController@index');
+Route::get('index/{page?}', 'PostController@index');
 Route::get('posts/create', 'PostController@create');
 Route::post('posts/create', 'PostController@store');
 Route::get('posts/{id}', ['as'=> 'posts', 'uses'=>'PostController@showAPost']);

@@ -8,6 +8,8 @@ use Carbon\Carbon;
 
 use App\Providers\Regex\Regex;
 
+use Illuminate\Support\Facades\Input;
+
 // Request by Fizz
 use App\Http\Requests\PostRequest;
 
@@ -17,11 +19,44 @@ use App\Post;
 class PostController extends Controller
 {
     // Index all posts, public, and saw by users
-    public function index(){
+    public function index($page = null){
+        // page for paginaiton
+        $search = Input::get('search');
+        if($page==null){
+            $page = 1;
+        }
 
-    	$posts= Post::latest('created_at')-> get();
-        //return Regex::frameYoutube('test');
-    	return view('blog.index', compact('posts'));
+        // total rows for pagination
+        if($search==null){
+            $raw         = Post::latest('created_at');
+            $totalRows   = Post::count();
+        } else {
+            $raw         = Post::where('title', 'like', '%'.$search.'%');
+            $totalRows   = $raw->count();
+        }
+        
+    	$posts       = $raw->skip(($page-1)*5)->take(5)-> get();
+        $latestPost  = $raw->skip(0)->take(6)->get();
+        
+        $currentPage = $page;
+        $notify      = $this->getNotification();
+        
+        if($search == null){
+            return view('blog.index', compact('posts', 'latestPost', 'totalRows', 'currentPage', 'notify'));
+        } else {
+            if($totalRows == 0){
+                $notify  = "Nothing found";
+            } else $notify = "Tìm thấy ". $totalRows." bài viết , my mister!";
+            return view('blog.index', compact('posts', 'latestPost', 'totalRows', 'currentPage', 'notify', 'search'));
+        }
+    	
+    }
+
+    private function getNotification(){
+        $notification = "
+            Page sẽ tiếp tục cập nhật các tính năng.
+        ";
+        return preg_replace("/\n/", "<br/>", $notification);
     }
 
     // show a Post 
@@ -42,10 +77,13 @@ class PostController extends Controller
      */
     public function store(PostRequest $request){
     	// validate and store on database//
-          
+        
+        // some pre-processor
+        $content = preg_replace("/\n/", "<br/>", $request->get('content')); 
+
     	Post::create([
     		'title' => $request->get('title'),
-    		'content'=> $request->get('content'),
+    		'content'=> $content,
     		'user_id'=> $request->get('user_id'),
     		'created_at' => Carbon::now(),
     		'updated_at' => Carbon::now()
@@ -67,9 +105,11 @@ class PostController extends Controller
 
     //update function on DB
     public function update(PostRequest $request, $post_id){
+         // some pre-processor
+        $content = preg_replace("/\n/", "<br/>", $request->get('content')); 
     	$post = Post::where('post_id', $post_id)-> firstOrFail();
     	$post->title = $request->get('title');
-    	$post->content = $request->get('content');
+    	$post->content = $content;
     	$post->save();
     	//$post-> update($request->all());
     	return redirect('posts/'.$post_id.'/edit');

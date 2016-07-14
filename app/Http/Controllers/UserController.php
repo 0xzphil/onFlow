@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Facebook;
 use FacebookRedirectLoginHelper;
 use FacebookSDKException;
-
+use Illuminate\Support\Facades\Route;
 class UserController extends Controller
 {
     /**
@@ -79,6 +79,33 @@ class UserController extends Controller
         return redirect('users/show');
     }
 
+    /**
+     * [testDispatch and test making request description]
+     * @return [type] [description]
+     */
+    public function testDispatch(){
+        $data = [
+            '_token'     => csrf_token(),
+            'username'   => 'Crocodile',
+            'password'   => '123456789',
+            'rpassword'   => '123456789',
+            'email'      =>'123456789@gmail.com', 
+            'facebookId' => '123456789',
+        ];
+
+        $request  = UserRequest::create('users/create', 'POST', $data);
+        $response = Route::dispatch($request);
+        $this->store($request);
+        return redirect('users/show');
+    }
+
+    public function loginWithFb(){
+        
+    }
+    /**
+     * [registerWithFb description]
+     * @return [type] [description]
+     */
     public function registerWithFb(){
         session_start();
         // init app with app id and secret
@@ -134,7 +161,7 @@ class UserController extends Controller
 
         // Get user information
         try{    
-            $response = $fb->get('/me', $accessToken);
+            $response = $fb->get('/me?fields=name,email,first_name,last_name', $accessToken);
         } catch(Facebook\Exceptions\FacebookResponseException $e){
             echo 'Graph returned an error: ' . $e->getMessage();
             exit;
@@ -148,7 +175,9 @@ class UserController extends Controller
         echo '</br>Name: ' . $userGraph->getName();
         echo '</br>Id: ' . $userGraph->getId();
         echo '</br>Email: ' . $userGraph->getEmail();
-
+        var_dump(
+            $userGraph->getField('email')
+        );
         // Create new user model
         $user             = new User();
         $user->username   = $userGraph->getName();

@@ -31,5 +31,38 @@ class Regex {
 		return $iframe;
 	}
 
+	/**
+	 * [shortContent This function using to shorten content less than 100 characters to show to index]
+	 * @param  [String] $content [content]
+	 * @return [String]          [shorten content]
+	 */
+	public static function shortContent($content, $number = null){
+		// delete bbcode, this function's not neccessory now
+		// 
+		if($number==null){
+			$number = 200;
+		}
+		if(strlen($content)> 100){
+			$shortContent = substr($content, 0, $number); 
+			$shortContent = $shortContent." ...";
+		} else $shortContent = $content;
+		return $shortContent;
+	}
+
+	/**
+	 * [getSearch description]
+	 * @param  [type] $data [description]
+	 * @return [type]       [description]
+	 */
+	public static function getSearch($data){
+		echo $data;
+		$searchPattern = "/(search=)(.+)/";
+		if(preg_match($searchPattern, $data, $matches)==0){
+			return null;
+		};
+		$searchValue = substr($matches[0], 7);
+		return $searchValue;
+	}
+
 
 }

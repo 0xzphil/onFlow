@@ -3,119 +3,38 @@
 @section('container')
     
     <!-- Start Featured Carousel -->
+    @if(!isset($search))
     <div class="container zerogrid">
         <div class="list_carousel">
         <ul id="featured-posts">
+            @for($iter =0; $iter< 6; $iter++)
+                <?php 
+                if(!isset($latestPost[$iter]))
+                    break;
+                ?>
+                @if($iter ==2 || $iter ==5)
+                    <li class="last carousel-item">
+                @else 
+                    <li class="first carousel-item">
+                @endif
+                <div class="post-margin">
+                <h6><a href="#">{{ $latestPost[$iter]->title }}</a></h6>
+                <span><i class="fa fa-clock-o"></i>{{ $latestPost[$iter]->created_at}}</span>
+            </div>
+                    
+                         <div class="featured-image">
+            <img width="290" height="130" src=' {{ URL::asset("img/tumblr_". ($iter+1). ".png")}}'  />                <div class="post-icon">
+                    <span class="fa-stack fa-lg">                   </span>
+                </div>
+            </div> 
+                        
+            <div class="post-margin">
+                <p>{{ Regex::shortContent($latestPost[$iter]->title, 100)}}</p>
+            </div>
+        </li>
+
+            @endfor
         
-        
-                <li class="first carousel-item">
-            <div class="post-margin">
-                <h6><a href="#">The Lighthouse Effect</a></h6>
-                <span><i class="fa fa-clock-o"></i> December 13, 2013</span>
-            </div>
-            
-                        <div class="featured-image">
-            <img width="290" height="130" src="img/HighRes-290x130.jpg"  />                <div class="post-icon">
-                    <span class="fa-stack fa-lg">
-                        <i class="fa fa-circle fa-stack-2x"></i>
-                        <i class="fa fa-picture-o fa-stack-1x fa-inverse"></i>                    </span>
-                </div>
-            </div>
-                        
-            <div class="post-margin">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet auctor ligula. Donec eu</p>
-            </div>
-        </li>
-                <li class="first carousel-item">
-            <div class="post-margin">
-                <h6><a href="#">One More Beer</a></h6>
-                <span><i class="fa fa-clock-o"></i> December 13, 2013</span>
-            </div>
-            
-                        <div class="featured-image">
-            <img width="290" height="130" src="img/one-more-beer-290x130.png"  />                <div class="post-icon">
-                    <span class="fa-stack fa-lg">
-                        <i class="fa fa-circle fa-stack-2x"></i>
-                        <i class="fa fa-play-circle-o fa-stack-1x fa-inverse"></i>                    </span>
-                </div>
-            </div>
-                        
-            <div class="post-margin">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet auctor ligula. Donec eu</p>
-            </div>
-        </li>
-                <li class="last carousel-item">
-            <div class="post-margin">
-                <h6><a href="#">Port Harbor</a></h6>
-                <span><i class="fa fa-clock-o"></i> December 13, 2013</span>
-            </div>
-            
-                        <div class="featured-image">
-            <img width="290" height="130" src="img/Port_Harbor1-290x130.jpg"  />                <div class="post-icon">
-                    <span class="fa-stack fa-lg">
-                        <i class="fa fa-circle fa-stack-2x"></i>
-                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>                    </span>
-                </div>
-            </div>
-                        
-            <div class="post-margin">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet auctor ligula. Donec eu</p>
-            </div>
-        </li>
-                <li class="first carousel-item">
-            <div class="post-margin">
-                <h6><a href="#">Underground Volcano</a></h6>
-                <span><i class="fa fa-clock-o"></i> December 13, 2013</span>
-            </div>
-            
-                        <div class="featured-image">
-            <img width="290" height="130" src="img/Timothy-J-Reynolds-2560x14401-290x130.jpg"  />                <div class="post-icon">
-                    <span class="fa-stack fa-lg">
-                        <i class="fa fa-circle fa-stack-2x"></i>
-                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>                    </span>
-                </div>
-            </div>
-                        
-            <div class="post-margin">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet auctor ligula. Donec eu</p>
-            </div>
-        </li>
-                <li class="first carousel-item">
-            <div class="post-margin">
-                <h6><a href="#">We Are not alone</a></h6>
-                <span><i class="fa fa-clock-o"></i> December 13, 2013</span>
-            </div>
-            
-                        <div class="featured-image">
-            <img width="290" height="130" src="img/UFO1-290x130.jpg"  />                <div class="post-icon">
-                    <span class="fa-stack fa-lg">
-                        <i class="fa fa-circle fa-stack-2x"></i>
-                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>                    </span>
-                </div>
-            </div>
-                        
-            <div class="post-margin">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet auctor ligula. Donec eu</p>
-            </div>
-        </li>
-                <li class="last carousel-item">
-            <div class="post-margin">
-                <h6><a href="#">Bearing water falls</a></h6>
-                <span><i class="fa fa-clock-o"></i> December 13, 2013</span>
-            </div>
-            
-                        <div class="featured-image">
-            <img width="290" height="130" src="img/Diamantina-Full_Landscape-290x130.jpg"  />                <div class="post-icon">
-                    <span class="fa-stack fa-lg">
-                        <i class="fa fa-circle fa-stack-2x"></i>
-                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>                    </span>
-                </div>
-            </div>
-                       
-            <div class="post-margin">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet auctor ligula. Donec eu</p>
-            </div>
-        </li>
                 
         </ul>
         
@@ -128,36 +47,52 @@
             </div>
       </div>
     </div>
+    @endif
     <!-- Start Featured Carousel -->
     
     	
     
     <!-- Start Main Container -->
     <div class="container zerogrid">
-    
+        <div id="header-nav-container"></div>
+        <div class="wrap-col">
+            <div class="post">
+                <div class="post-margin">
+                    <h6>Page Keeper</h6><br/>
+                    <p>
+                    {!! $notify !!}
+                    </p>
+                </div> 
+                
+            </div>
+        </div>
+
         <!-- Start Posts Container -->
         <div class="col-2-3" id="post-container">
+
  			<div class="wrap-col">
-                 
         	<!-- Start Post Item -->
 
 
             @foreach($posts as $post)
 
             <div class="post">
+
                 <div class="post-margin">
                 
                 <div class="post-avatar">
                     <div class="avatar-frame"></div>
                     <!-- Avatar -->
-                    <img alt='' src='http://1.gravatar.com/avatar/16afd22c8bf5c2398b206a76c9316a3c?s=70&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D70&amp;r=G' class='avatar avatar-70 photo' height='70' width='70' />                </div>
-                
-                <h4 class="post-title"><a href= '{{ url('posts',  $post-> post_id)}}'>
+                    <img alt='' src='{{URL::asset('img/logodefault.png')}}' class='avatar avatar-70 photo' height='70' width='70' />                </div>
+                <div class="post-title">
+                <h4><a href= '{{ url('posts',  $post-> post_id)}}'>
                     {{ $post-> title}} 
                 </a></h4>
+                </div>
                     <ul class="post-status">
                     <li><i class="fa fa-clock-o"></i> {{ $post-> created_at }}</li>
-                    <li><i class="fa fa-folder-open-o"></i><a href="#" title="View all posts in Illustration" rel="category">Illustration</a></li>
+                    <li><i class="fa fa-folder-open-o"></i>
+                    <a href="#" title="View all posts in Illustration" rel="category">Illustration</a></li>
                     <li><i class="fa fa-comment-o"></i>No Comments</li>
                     </ul>
                     <div class="clear"></div>
@@ -171,7 +106,7 @@
                                 
             <div class="post-margin">
             <p>
-            {{ $post-> content}}
+                {!!Regex::shortContent($post-> content)!!}
             </p>
             </div>
             
@@ -198,7 +133,7 @@
             </li>
             
             <li>
-            <a href="{{ url('posts',  $post-> post_id)}}" class="readmore">Read More <i class="fa fa-arrow-circle-o-right"></i></a>
+            <a href="{{ url('posts',  $post-> post_id)}}" class="readmore">Đọc thêm <i class="fa fa-arrow-circle-o-right"></i></a>
             </li>
             </ul>
             
@@ -214,7 +149,17 @@
             
                         
         <!-- Start Pagination -->
-            <div class="spacing-20"></div><ul class="pagination"><li class='current'><a href=''>1</a></li><li><a href='http://demo.themesmarts.com/euclid/?paged=2'>2</a></li><li><a href='http://demo.themesmarts.com/euclid/?paged=3'>3</a></li><li><a href='http://demo.themesmarts.com/euclid/?paged=4'>4</a></li></ul>
+            <div class="spacing-20"></div><ul class="pagination">
+            @for($pagePagi = 1; $pagePagi< $totalRows/5 +1; $pagePagi++)
+                @if($pagePagi == $currentPage)
+                    <li class='current'><a href="{{url('index', $pagePagi, isset($search)?$search:null)}}">{{$pagePagi}}</a></li>
+                @else
+                    <li><a href="{{url('index', $pagePagi)}}">{{$pagePagi}}</a></li>
+                @endif
+            @endfor
+            </ul>
+
+            
         <!-- End Pagination -->
             
         <div class="clear"></div>
@@ -225,18 +170,32 @@
         <!-- Start Sidebar -->
     	<div class="col-1-3">
 		<div class="wrap-col">
-	    	<div class="widget-container"><form role="search" method="get" id="searchform" class="searchform" action="http://demo.themesmarts.com/euclid/">
-				<div>
-					<label class="screen-reader-text" for="s">Search for:</label>
-					<input type="text" value="" name="s" id="s" />
-					<input type="submit" id="searchsubmit" value="Search" />
-				</div>
-			</form><div class="clear"></div></div><div class="widget-container"><h6 class="widget-title">Categories</h6>		<ul>
-	<li class="cat-item cat-item-5"><a href="#" title="View all posts filed under Apps">Apps</a>
+
+
+	    	<div class="widget-container">
+            {{ Form::open(['method'=>'GET',  'url'=> 'index/1', 'class' =>'searchform' ]) }}
+                <div>
+                {{ Form::label('Search for:', null,  ['for'=> 's', 'class' =>'screen-reader-text']) }}
+
+                {{ Form::text('search' , null, ['id'=>'s']) }}
+
+                {{ Form::submit('Tìm kiếm', ['id'=>'searchsubmit']) }}
+                </div>
+            {{ Form::close() }}
+            <div class="clear"></div>
+
+
+            </div>
+
+
+
+
+            <div class="widget-container"><h6 class="widget-title">Danh mục</h6>		<ul>
+	<li class="cat-item cat-item-5"><a href="#" title="View all posts filed under Apps">Wakfu</a>
 </li>
-	<li class="cat-item cat-item-3"><a href="#" title="View all posts filed under Illustration">Illustration</a>
+	<li class="cat-item cat-item-3"><a href="#" title="View all posts filed under Illustration">Tree of Savior</a>
 </li>
-	<li class="cat-item cat-item-4"><a href="#" title="View all posts filed under Logo">Logo</a>
+	<li class="cat-item cat-item-4"><a href="#" title="View all posts filed under Logo">Chia sẻ</a>
 </li>
 		</ul>
 <div class="clear"></div></div><div class="widget-container"><h6 class="widget-title">Latest Posts</h6>	<!-- Start Widget -->
@@ -245,7 +204,7 @@
                 <li>
                 <div class="post-image">
                 <div class="post-mask"></div>
-                <img width="70" height="70" src="img/HighRes-70x70.jpg" class="attachment-post-widget #"  />                </div>
+                <img width="70" height="70" src=" {{ URL::asset('img/HighRes-70x70.jpg')}}" class="attachment-post-widget #"  />                </div>
                 
                 <h6><a href="#">The Lighthouse Effect</a></h6>
                 <span>November 02, 2013</span>
@@ -256,7 +215,7 @@
                 <li>
                 <div class="post-image">
                 <div class="post-mask"></div>
-                <img width="70" height="70" src="img/one-more-beer-70x70.png" class="attachment-post-widget #"  />                </div>
+                <img width="70" height="70" src=" {{ URL::asset('img/one-more-beer-70x70.png')}}" class="attachment-post-widget #"  />                </div>
                 
                 <h6><a href="#">One More Beer</a></h6>
                 <span>November 02, 2013</span>
@@ -267,7 +226,7 @@
                 <li>
                 <div class="post-image">
                 <div class="post-mask"></div>
-                <img width="70" height="70" src="img/Port_Harbor1-70x70.jpg" class="attachment-post-widget #"  />                </div>
+                <img width="70" height="70" src=" {{ URL::asset('img/Port_Harbor1-70x70.jpg')}}" class="attachment-post-widget #"  />                </div>
                 
                 <h6><a href="#">Port Harbor</a></h6>
                 <span>November 02, 2013</span>
@@ -278,7 +237,7 @@
                 <li>
                 <div class="post-image">
                 <div class="post-mask"></div>
-                <img width="70" height="70" src="img/Timothy-J-Reynolds-2560x14401-70x70.jpg" class="attachment-post-widget #"  />                </div>
+                <img width="70" height="70" src=" {{ URL::asset('img/Timothy-J-Reynolds-2560x14401-70x70.jpg')}}" class="attachment-post-widget #"  />                </div>
                 
                 <h6><a href="#">Underground Volcano</a></h6>
                 <span>November 02, 2013</span>

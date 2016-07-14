@@ -77,11 +77,11 @@
                     
 	<ul class="sf-menu"><li class="menu-item current-menu-item"><a href='{{ url('index')}}'>Home</a></li>
 	<li class="menu-item"><a href="blog.html">Blog</a></li>
-<li class="menu-item"><a href="#">Features</a>
+<li class="menu-item"><a href="#">Log In</a>
 <ul class="sub-menu">
-	<li class="menu-item"><a href="#">Menu 01</a></li>
-	<li class="menu-item"><a href="#">Menu 02</a></li>
-	<li class="menu-item"><a href="#">Menu 03</a></li>
+	<li class="menu-item"><a href="#">Đăng ký bằng facebook</a></li>
+	<li class="menu-item"><a href="#">Đăng nhập bằng facebook</a></li>
+	<li class="menu-item"><a href="#">Đăng nhập</a></li>
 </ul>
 </li>
 <li class="menu-item"><a href="about.html">About us</a></li>
@@ -109,7 +109,7 @@
         <div id="footer-container" class="col-full">
         <div class="wrap-col">	
             <!-- Footer Copyright -->
-            <p>Copyrigh &copy; 2013 Euclid. All Rights Reserved.</p>
+            <p>Open source 2016 ONFLOW. All Rights Reserved.</p>
             <!-- End Footer Copyright -->
             
             <!-- Footer Logo -->
