@@ -28,16 +28,15 @@ class PostController extends Controller
 
         // total rows for pagination
         if($search==null){
-            $raw         = Post::latest('created_at');
-            $totalRows   = Post::count();
+            $raw      = Post::latest('created_at');
+            $totalRows= Post::count();
         } else {
-            $raw         = Post::where('title', 'like', '%'.$search.'%');
-            $totalRows   = $raw->count();
+            $raw      = Post::where('title', 'like', '%'.$search.'%');
+            $totalRows= $raw->count();
         }
         
     	$posts       = $raw->skip(($page-1)*5)->take(5)-> get();
         $latestPost  = $raw->skip(0)->take(6)->get();
-        
         $currentPage = $page;
         $notify      = $this->getNotification();
         
@@ -79,15 +78,16 @@ class PostController extends Controller
     	// validate and store on database//
         
         // some pre-processor
-        $content = preg_replace("/\n/", "<br/>", $request->get('content')); 
-
-    	Post::create([
-    		'title' => $request->get('title'),
-    		'content'=> $content,
-    		'user_id'=> $request->get('user_id'),
-    		'created_at' => Carbon::now(),
-    		'updated_at' => Carbon::now()
-    	]);
+        $content = preg_replace("/\n/", "<br/>", $request->get('content'));
+        $post    = new Post([
+            'title' => $request->get('title'),
+            'content'=> $content,
+            'user_id'=> $request->get('user_id'),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+        \Auth::user()->posts()->save($post);
+    	
     	// or using 
 		// Post::create($request->all());
        	return redirect('index');
@@ -100,7 +100,9 @@ class PostController extends Controller
      */
     public function edit($id){
     	$post = Post::where('post_id', $id)->firstOrFail();
-    	return view('blog.edit', compact('post'));
+        if($post->user_id== \Auth::user()->user_id)
+    	       return view('blog.edit', compact('post'));
+        else return "You dont have permission to edit this post!!";
     }
 
     //update function on DB

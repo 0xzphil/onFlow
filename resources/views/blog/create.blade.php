@@ -10,7 +10,6 @@
 
 {{ Form:: open(['url'=> 'posts/create'])}}
 	<!-- Temporary -->
-	{{ Form::hidden('user_id', 1) }}
 	<p>
 	{{Form::label('Title')}}
 	{{Form::text('title', null, ['class'=> 'class-control'])}}
