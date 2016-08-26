@@ -5,7 +5,7 @@
     <div class="container zerogrid">
     
         <!-- Start Posts Container -->
-        <div class="col-2-3" id="post-container">
+        <div class="col-full" id="post-container">
         	<div class="wrap-col">
             
             
@@ -24,20 +24,18 @@
                     <li><i class="fa fa-folder-open-o"></i><a href="#" title="View all posts in Illustration" rel="category">Illustration</a></li>
                     <li><i class="fa fa-comment-o"></i>No Comments</li>
                     </ul>
-                    <div class="clear"></div>
                 </div>
                 
            
-            {!!Regex::frameYoutube($post->content)!!}
+            {!!Regex::youtube($post->content, null, null, 'iframepost')!!}
+
             <div class="post-margin">
-            <p>
             <!-- Content of a blog post -->
-            {!! $post-> content!!}
-
-            </p>
-
-			<!-- Post Tags -->
+            {!!  nl2br(Regex::bbCode($post-> content)) !!}
+            </div>
             
+			<!-- Post Tags -->
+            <div class="post-margin">
             <div class="post-tags">
             <span class="fa-stack fa-lg">
                <i class="fa fa-circle fa-stack-2x"></i>
@@ -179,23 +177,38 @@
         <!-- End Posts Container -->
 		
         <!-- Start Sidebar -->
-		<div class="col-1-3"><div class="wrap-col">
-			<div class="widget-container"><form role="search" method="get" id="searchform" class="searchform" action="http://demo.themesmarts.com/euclid/">
-				<div>
-					<label class="screen-reader-text" for="s">Search for:</label>
-					<input type="text" value="" name="s" id="s" />
-					<input type="submit" id="searchsubmit" value="Search" />
-				</div>
-			</form><div class="clear"></div></div><div class="widget-container"><h6 class="widget-title">Categories</h6>		<ul>
-	        <li class="cat-item cat-item-5"><a href="#" title="View all posts filed under Apps">Apps</a>
+		<div class="col-full">
+        <div class="wrap-col">
+			
+
+
+
+            
+<!--
+
+<div class="widget-container"><form role="search" method="get" id="searchform" class="searchform" action="http://demo.themesmarts.com/euclid/">
+                <div>
+                    <label class="screen-reader-text" for="s">Search for:</label>
+                    <input type="text" value="" name="s" id="s" />
+                    <input type="submit" id="searchsubmit" value="Search" />
+                </div>
+            </form><div class="clear"></div></div>
+
+
+
+<div class="widget-container"><h6 class="widget-title">Categories</h6>      <ul>
+            <li class="cat-item cat-item-5"><a href="#" title="View all posts filed under Apps">Apps</a>
             </li>
-	        <li class="cat-item cat-item-3"><a href="#" title="View all posts filed under Illustration">Illustration</a>
+            <li class="cat-item cat-item-3"><a href="#" title="View all posts filed under Illustration">Illustration</a>
             </li>
-	        <li class="cat-item cat-item-4"><a href="#" title="View all posts filed under Logo">Logo</a>
+            <li class="cat-item cat-item-4"><a href="#" title="View all posts filed under Logo">Logo</a>
             </li>
-		</ul>
+        </ul>
+
+
+
 <div class="clear"></div></div><div class="widget-container"><h6 class="widget-title">Latest Posts</h6>	<!-- Start Widget -->
-                <ul class="widget-recent-posts">
+                <!--<ul class="widget-recent-posts">
                                 
                 <li>
                 <div class="post-image">
@@ -242,8 +255,17 @@
                 
                  
                 </ul>
+                <div class="clear"></div></div>
    <!-- End Widget -->
-<div class="clear"></div></div><div class="widget-container"><h6 class="widget-title">Tag Cloud</h6><div class="tagcloud"><a href='#' class='tag-link-12' title='1 topic' style='font-size: 8pt;'>Color Schemes</a>
+
+
+
+
+
+<!-- Tag cloud -->
+<div class="widget-container">
+<h6 class="widget-title">Tag Cloud</h6>
+<div class="tagcloud"><a href='#' class='tag-link-12' title='1 topic' style='font-size: 8pt;'>Color Schemes</a>
 <a href='#gallery' class='tag-link-6' title='1 topic' style='font-size: 8pt;'>Gallery</a>
 <a href='#images' class='tag-link-8' title='1 topic' style='font-size: 8pt;'>Images</a>
 <a href='#light' class='tag-link-11' title='1 topic' style='font-size: 8pt;'>Light</a>

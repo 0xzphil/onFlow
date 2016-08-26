@@ -9,8 +9,10 @@
 	<div class="container zerogrid">
 
 
-
-	<div class="post">
+	<div class="col-full" id="post-container">
+	<div class="wrap-col">
+        <div class="post">
+            <div class="post-margin">
 
 		<h1> Create user</h1>
 
@@ -22,7 +24,8 @@
 
 			<p>
 			{{ Form:: label('Username')}}
-
+			</p>
+			<p>
 			{{ Form:: text('username', isset($user) ? $user->username : null,  ['class'=> 'form-control', 'foo'=> 'bar'])}}
 
 			</p>
@@ -34,8 +37,9 @@
 			<p>
 
 			{{ Form:: label('Password')}}
-
-			{{ Form:: text('password', null,  ['class'=> 'form-control', 'foo'=> 'bar'])}}
+			</p>
+			<p>
+			{{ Form:: password('password', null,  ['class'=> 'form-control', 'foo'=> 'bar'])}}
 
 			</p>
 
@@ -46,8 +50,9 @@
 			<p>
 
 			{{ Form:: label('Repeat password')}}
-
-			{{ Form:: text('rpassword', null,  ['class'=> 'form-control', 'foo'=> 'bar'])}}
+			</p>
+			<p>
+			{{ Form:: password('rpassword', null,  ['class'=> 'form-control', 'foo'=> 'bar'])}}
 
 			</p>
 
@@ -58,8 +63,9 @@
 			<p>
 
 			{{ Form:: label('Email')}}
-
-			{{ Form:: text('email', isset($user) ? $user->email : '',  ['class'=> 'form-control', 'foo'=> 'bar'])}}
+			</p>
+			<p>
+			{{ Form:: email('email', isset($user) ? $user->email : '',  ['class'=> 'form-control', 'foo'=> 'bar'])}}
 
 			</p>
 
@@ -67,9 +73,9 @@
 			{{ Form:: hidden('facebookId', isset($user) ? $user->facebookId : '')}}
 
 			<!-- Submit -->
-
+			<p>
 			{{ Form:: submit('submit', ['class'=> 'form-control'])}}
-
+			</p>
 
 
 		{{ Form::close() }}	
@@ -96,7 +102,9 @@
 
 	</div>	
 
-	
+	</div>
+
+	</div>
 
 
 

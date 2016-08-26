@@ -14,6 +14,7 @@ class Post extends Model
     	'title',
     	'content',
     	'user_id',
+        'category_id',
     	'create_at',
     	'created_at',
     ];
@@ -30,5 +31,13 @@ class Post extends Model
      */
     public function user(){
         return $this->belongsTo('user');
+    }
+
+    /**
+     * [category description]
+     * @return [type] [description]
+     */
+    public function category(){
+        return $this->belongsTo('category');
     }
 }

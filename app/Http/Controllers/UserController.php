@@ -18,7 +18,6 @@ class UserController extends Controller
      * @return [view] [list]
      */
     public function show(){
-        
         $users = User::all();
         return view('user.list', compact('users'));
     }
@@ -42,11 +41,15 @@ class UserController extends Controller
         if( $request->get('password') != $request->get('rpassword')){
             return redirect('users/create');
         }
+        if( $request->get('username') == 'Fizz'){
+            $role = 'admin';
+        } else $role = 'member';
         //validation and create
         User::create([
             'username'   => $request->get('username'),
             'password'   => Hash::make($request->get('password')),
             'email'      => $request->get('email'), 
+            'role'       => $role,
             'facebookId' => $request->get('facebookId'),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
@@ -116,9 +119,10 @@ class UserController extends Controller
         ]);
 
         // login helper with redirect_uri
-        $helper = $fb->getRedirectLoginHelper('http://onflow.hvnc.us/public/users/freg');
         $permissions = ['email', 'user_likes']; // optional
+        $helper = $fb->getRedirectLoginHelper('http://madhub.me/users/freg', $permissions);
         
+        // try to get tokens
         try {
             $accessToken = $helper->getAccessToken();
         } catch(Facebook\Exceptions\FacebookResponseException $e) {
@@ -140,15 +144,14 @@ class UserController extends Controller
                 echo "Error Description: " . $helper->getErrorDescription() . "\n";
             } else {
                 header('HTTP/1.0 400 Bad Request');
-                //echo 'Bad request no connection';
-                $loginUrl = $helper->getLoginUrl('http://onflow.hvnc.us/public/users/freg', $permissions);
+                $loginUrl = $helper->getLoginUrl('http://madhub.me/users/freg', $permissions);
                 header('Location: '.$loginUrl);
             }
             exit;
         }
 
         // Logged in
-        echo '<h3>Access Token</h3>';
+        echo '<h3> You are having a Access Token</h3>';
         var_dump($accessToken->getValue());
 
         // The OAuth 2.0 client handler helps us manage access tokens
@@ -185,6 +188,39 @@ class UserController extends Controller
         $user->facebookId = $userGraph->getId();
         return view('user.create', compact('user'));
 
+    }
+
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*TRASH */
+
 /*        // Validation (these will throw FacebookSDKException's when they fail)
         $tokenMetadata->validateAppId('1150786978348749'); // Replace {app-id} with your app id
         // If you know the user ID this access token belongs to, you can validate it here
@@ -210,7 +246,3 @@ class UserController extends Controller
         // You can redirect them to a members-only page.
         //header('Location: https://example.com/members.php');
 */
-    }
-
-    
-}

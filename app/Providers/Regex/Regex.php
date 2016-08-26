@@ -7,27 +7,39 @@ class Regex {
 	 * @param  String $comment [description]
 	 * @return [String]          [description]
 	 */
-	public static function frameYoutube($comment){
+	public static function youtube($comment, $width = null, $height = null, $category = null){
 		// use this pattern to find youtube link on comment
-		$youtubePattern = "/(https:\/\/|http:\/\/)(.+)(youtu)(.+)(v=)(\S+)/";
+		$youtubePattern = "/(https:\/\/|http:\/\/)(.+?)(youtu)(.+?)(v=)(\S+)/";
 		// if not matching
 		if(preg_match($youtubePattern, $comment , $matches)==0){
-			return "";
+			return null;
 		};
+		if($width == null){
+			$width = 853;
+		}
+		if($height == null){
+			$height = 450;
+		}
+		if($width == 853){
+			$size = "maxresdefault";
+		} else {
+			$size = "mqdefault";
+		}
 		// use to find v variable on youtube link
 		$vPattern = "/(v=)([^&]+)/";
 		preg_match($vPattern, $matches[0], $match);
 
 		// v variable 
 		$v = substr($match[0], 2);
+		if($category == 'iframepost'){
+			return "<iframe width=\"940\" height=\"530\" src=\"https://www.youtube.com/embed/".$v."\" frameborder=\"0\" allowfullscreen></iframe>";
+		}
+
+		if($category == 'iframe'){
+			return "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/".$v."\" frameborder=\"0\" allowfullscreen></iframe>";
+		}
 		// iframe youtube
-		$iframe = "<div class=\"featured-image\"><iframe width=\"853\" height=\"480\" src=\"https://www.youtube.com/embed/".$v."\" frameborder=\"0\" allowfullscreen></iframe><div class=\"post-icon\">
-                    <span class=\"fa-stack fa-lg\">
-                      <i class=\"fa fa-circle fa-stack-2x\"></i>
-                      <i class=\"fa fa-pencil fa-stack-1x fa-inverse\"></i>
-                    </span>
-                    </div>
-                    </div>";
+		$iframe = "<img height=\"".$height."\" width=\"".$width."\" src=\"http://img.youtube.com/vi/".$v."/".$size.".jpg\" >";
 		return $iframe;
 	}
 
@@ -40,11 +52,11 @@ class Regex {
 		// delete bbcode, this function's not neccessory now
 		// 
 		if($number==null){
-			$number = 200;
+			$number = 100;
 		}
-		if(strlen($content)> 100){
-			$shortContent = substr($content, 0, $number); 
-			$shortContent = $shortContent." ...";
+		if(mb_strlen($content, 'utf-8')> $number){
+			$shortContent = mb_substr($content, 0, $number, 'utf-8'); 
+			$shortContent .=" ...";
 		} else $shortContent = $content;
 		return $shortContent;
 	}
@@ -55,13 +67,36 @@ class Regex {
 	 * @return [type]       [description]
 	 */
 	public static function getSearch($data){
-		echo $data;
 		$searchPattern = "/(search=)(.+)/";
 		if(preg_match($searchPattern, $data, $matches)==0){
 			return null;
 		};
 		$searchValue = substr($matches[0], 7);
 		return $searchValue;
+	}
+
+	/**
+	 * [bbCode relace function]
+	 * @param  [type] $data [description]
+	 * @return [type]       [description]
+	 */
+	public static function bbCode($data){
+		$bbcodes = [
+			['/(\[url=(.+?)\])(.+?)(\[\/url\])/', '<br/><a href=\'$2\' class="readmore">$3</a>'],
+			['/(\[url\])(.+?)(\[\/url\])/'      , '<br/><a href=\'$2\' class="readmore">$2</a>'],
+			['/(https:\/\/|http:\/\/)(.+?)(youtu)(.+?)(v=)(\S+)/',     '']
+		];  
+		foreach ($bbcodes as $bbcode) {
+			# code...
+			//echo $data, '</br>';
+			$data = preg_replace($bbcode[0], $bbcode[1], $data);
+		}
+		
+		return $data;
+	}
+
+	public static function altAttribute(){
+
 	}
 
 

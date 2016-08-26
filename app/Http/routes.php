@@ -11,12 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('app');
-});
+Route::get('/', 'PostController@index');
 Route::get('/users/freg', 'UserController@registerWithFb');
 // Test routes
-Route::get('/test', ['as'=> 'PostController@index']);
 Route::get('about', 'PageController@about');
 Route::get('contact', 'PageController@contact');
 Route::get('dispatch', 'UserController@testDispatch');
@@ -35,6 +32,8 @@ Route::post('users/create', 'UserController@store');
 Route::get('users/{id}/edit', 'UserController@edit');
 Route::patch('users/{id}', 'UserController@update');
 
+// Route for categories
+Route::get('categories/{id}/show', 'CategoryController@show');
 // Route controllers
 Route::controllers([
 	'auth' => 'Auth\AuthController',
